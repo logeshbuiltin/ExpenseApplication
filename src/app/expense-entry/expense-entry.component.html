@@ -1,0 +1,75 @@
+
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-12" style="width: 400px;">
+              <div class="card cardchg">
+                  <div class="card-header card-header-danger">
+                      <h2 class="card-title">Enter Expense</h2>
+                  </div>
+                  <div class="card-body">
+                      <form>
+                          <div class="container-fluid">
+                                                          
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <mat-form-field>
+                                      <mat-select id="description" name="description" placeholder="Description">
+                                        <mat-option *ngFor="let desc of description" [value]="desc.id">
+                                          {{desc.name}}
+                                        </mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                      <mat-form-field class="example-full-wi dth">
+                                          <input matInput placeholder="Expense" type="number">
+                                        </mat-form-field>
+                                    <!-- <md-input-container class="md-block">
+                                      <label>Expense (MYR)</label>
+                                      <input mdInput required type="number" step="any" name="rate" ng-model="project.rate"/>
+                                      <input required type="number" step="any" name="rate" ng-model="project.rate" min="800"
+                                             max="4999" ng-pattern="/^1234$/" />
+                              
+                                      <div ng-messages="projectForm.rate.$error" multiple md-auto-hide="false">
+                                        <div ng-message="required">
+                                          You've got to charge something! You can't just <b>give away</b> a Missile Defense
+                                          System.
+                                        </div>
+                              
+                                        <div ng-message="min">
+                                          You should charge at least $800 an hour. This job is a big deal... if you mess up,
+                                          everyone dies!
+                                        </div>
+                              
+                                        <div ng-message="pattern">
+                                          You should charge exactly $1,234.
+                                        </div>
+                              
+                                        <div ng-message="max">
+                                          {{projectForm.rate.$viewValue | currency:"$":0}} an hour? That's a little ridiculous. I
+                                          doubt even Bill Clinton could afford that.
+                                        </div>
+                                     </div>
+                                    </md-input-container> -->
+                                </div>
+                              </div>    
+                              <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="example-full-wi dth">
+                                      <input matInput placeholder="Shop ID" type="date">
+                                    </mat-form-field>
+                              </div>
+                            </div>                                              
+                                <button mat-raised-button type="submit" class="btn btn-danger elementspace">Submit</button>
+                                <button mat-raised-button type="submit" (click)="closeDialog()" class="btn btn-danger pull-right elementspace">Cancel</button>
+                          </div>                        
+                      </form>
+                  </div>
+              </div>
+          </div>         
+      </div>
+  </div>
+</div>
