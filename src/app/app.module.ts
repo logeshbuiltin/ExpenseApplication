@@ -15,12 +15,10 @@ import {
 } from '@agm/core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AdminComponent } from './admin/admin.component';
-import { MatButtonModule, MatRippleModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatTooltipModule, MatDialog, MatDialogModule } from '@angular/material';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
-import { UserService } from '_services/user.service';
 import { HttpClientModule } from '@angular/common/http';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginRegisterModule } from './login-register/login-register.module';
 
 @NgModule({
   imports: [
@@ -33,19 +31,17 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ReactiveFormsModule,
     RouterModule,
     AppRoutingModule, 
+    LoginRegisterModule,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     })
   ],
   declarations: [
     AppComponent,
-    //LoginComponent,
-    //RegisterComponent,
     AdminComponent,
     AdminLayoutComponent,
-    //ExpenseEntryComponent,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

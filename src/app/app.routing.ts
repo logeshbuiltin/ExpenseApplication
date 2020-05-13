@@ -1,13 +1,11 @@
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login-register/login/login.component';
 import { AdminComponent } from './admin/admin.component';
-import { RegisterComponent } from './register/register.component';
-import { ExpenseEntryComponent } from './expense-entry/expense-entry.component';
 
 const routes: Routes =[
   {
@@ -25,16 +23,17 @@ const routes: Routes =[
         {
       path: '',
       loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
-  }]}
-    // { path: 'dashboard',      component: DashboardComponent },
-    // { path: 'user-profile',   component: UserProfileComponent },
-    // { path: 'table-list',     component: TableListComponent },
-    // { path: 'typography',     component: TypographyComponent },
-    // { path: 'icons',          component: IconsComponent },
-    // { path: 'maps',           component: MapsComponent },
-    // { path: 'notifications',  component: NotificationsComponent },
-    // { path: 'upgrade',        component: UpgradeComponent },
-    // { path: '',               redirectTo: 'dashboard', pathMatch: 'full' }
+  }
+]},
+{
+  path: "login",
+  component: LoginComponent,
+  children: [
+    {
+    path: '',
+    loadChildren: './login-register/login-register.module#LoginRegisterModule'
+    }
+]}
 ];
 
 @NgModule({

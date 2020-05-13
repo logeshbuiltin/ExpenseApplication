@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as Chartist from 'chartist';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig, MatTableDataSource, MatPaginator, matTabsAnimations} from '@angular/material';
+import {MatDialog, MatPaginator, MatSnackBar} from '@angular/material';
 import { ExpenseEntryComponent } from 'app/expense-entry/expense-entry.component';
-import { HttpClient } from '@angular/common/http';
-import { Employee } from 'app/models/employee.model';
+import { httpBaseService } from 'app/services/http.service';
+import { Router } from '@angular/router';
+import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
+import { environment } from 'app/application.properties';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,19 +13,25 @@ import { Employee } from 'app/models/employee.model';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  public userId: number = 0;
+  public userName: string = "";
   public length: number = 0;
   public pageSize: number = 0;
   public pageSizeOptions: any[] = [];
-  private products : Employee[] = []; 
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
-  displayedColumns = ['EmpID', 'Name', 'EmpCode', 'Salary', 'actions'];
+
+  public expenseList: any[] = [];
+  public incomeList: any[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private dialog:MatDialog,
-    private httpClient : HttpClient
-    ) { }
+    private baseservice: httpBaseService,
+    private router: Router,
+    public snackBar: MatSnackBar,
+  ) { }
+
+  //Animations
   startAnimationForLineChart(chart){
       let seq: any, delays: any, durations: any;
       seq = 0;
@@ -81,6 +89,8 @@ export class DashboardComponent implements OnInit {
       seq2 = 0;
   };
   ngOnInit() {
+    this.userName = localStorage.getItem("username");
+    this.getUserDetails();
       /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
       const dataDailySalesChart: any = {
@@ -95,7 +105,7 @@ export class DashboardComponent implements OnInit {
               tension: 0
           }),
           low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+          high: 50, // Expense App: we recommend you to set the high sa the biggest value + something for a better look
           chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
       }
 
@@ -118,7 +128,7 @@ export class DashboardComponent implements OnInit {
               tension: 0
           }),
           low: 0,
-          high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+          high: 1000, // Expense App: we recommend you to set the high sa the biggest value + something for a better look
           chartPadding: { top: 0, right: 0, bottom: 0, left: 0}
       }
 
@@ -161,57 +171,129 @@ export class DashboardComponent implements OnInit {
       //start animation for the Emails Subscription Chart
       this.startAnimationForBarChart(websiteViewsChart);
 
-      this.loadTables();
-
   }
 
   ngAfterViewInit() {
-    this.dataSource = new MatTableDataSource<any>(); 
-    this.dataSource.paginator = this.paginator;
   }
 
-  onCapture(){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
-    this.dialog.open(ExpenseEntryComponent, dialogConfig);
-  }
 
-  onCapture2(){
-    this.dialog.open(ExpenseEntryComponent);
-}
-
-loadTables(){
-  let expenseList = [];
-  this.httpClient.get<any[]>('http://localhost:8080/employees').subscribe(data => {
-      let empService = {} as EmployeeList;
-      if(data){
-        data.forEach(element => {
-          empService.empId = element.EmpID;
-          empService.empName = element.Name;
-          empService.empCode = element.Empcode;
-          empService.empSalary = element.Salary;
-        });
-        expenseList.push(empService);
+  getUserDetails() {
+    this.baseservice.setResourceURL("/register/");
+    this.baseservice.getResource("user/" + this.userName).subscribe(res => {
+      if(res) {
+        this.userId = res.id;
+        this.loadTables();
+      } else {
+        this.router.navigateByUrl('/login');
       }
-      this.dataSource = new MatTableDataSource<any>(expenseList);
+    },error =>{
+      console.log(error);
     });
   }
 
-}
+  onCapture(type=""){
+    const dialogRef = this.dialog.open(ExpenseEntryComponent, {
+      data: {
+        userId: this.userId,
+        type: type,
+        itemDetails: "",
+      }
+    });
 
-const ELEMENT_DATA: Employee[] = [
-  {EmpID: 1, Name: 'John', EmpCode: 'Doe', Salary: 7500},
-  {EmpID: 1, Name: 'Mike', EmpCode: 'Hussey', Salary: 8000},
-  {EmpID: 1, Name: 'Ricky', EmpCode: 'Hans', Salary: 3500},
-  {EmpID: 1, Name: 'Martin', EmpCode: 'Kos', Salary: 7000},
-  {EmpID: 1, Name: 'Tom', EmpCode: 'Paisa', Salary: 4000}
-];
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTables();
+    });
+  }
 
-export interface EmployeeList{
-  empId: string;
-  empName: string;
-  empCode: string;
-  empSalary: number;
+  loadTables(){
+    this.incomeList = [];
+    this.expenseList = [];
+    this.getExpenseList();
+    this.getIncomeList();
+  }
+
+  getIncomeList() {
+    this.baseservice.setResourceURL("/items");
+    this.baseservice.getResource("/type/income/" + this.userId).subscribe(data => {
+      if(data.items && data.items.length > 0){
+        data.items.forEach(element => {
+          let incmList = {
+            itemId: element.id,
+            purchaseType: element.purchaseType,
+            entryAmount: element.entryAmount,
+            description: element.description,
+            purchaseDate: new Date(element.purchaseDate)
+          }
+          this.incomeList.push(incmList);
+        });
+      }
+    });
+  }
+
+  getExpenseList() {
+    this.baseservice.setResourceURL("/items");
+    this.baseservice.getResource("/type/expense/" + this.userId).subscribe(data => {
+      if(data.items && data.items.length > 0){
+        data.items.forEach(element => {
+          let expList = {
+            itemId: element.id,
+            purchaseType: element.purchaseType,
+            entryAmount: element.entryAmount,
+            description: element.description,
+            purchaseDate: new Date(element.purchaseDate)
+          }
+          this.expenseList.push(expList);
+        });
+      }
+    });
+  }
+
+  editItem(item, type) {
+    const dialogRef = this.dialog.open(ExpenseEntryComponent, {
+      data: {
+        userId: this.userId,
+        type: type,
+        itemDetails: item,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadTables();
+    });
+  }
+
+  deleteItem(item, type) {
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        dialog: environment.deleteConfirm,
+      }
+    });
+    confirmDialog.afterClosed().subscribe(res => {
+      if(res && res.confirm == "yes") {
+        this.performDelete(item, type);
+      }
+    });
+  }
+
+  performDelete(item: any, type: any) {
+    this.baseservice.setResourceURL("/item/");
+    this.baseservice.deleteResource(item.itemId).subscribe(res => {
+      if(res && res.item){
+        this.snackBar.open("Deleted: ", res.item, {duration: 3000});
+        if(type =='income') {
+          let index = this.incomeList.findIndex(i => i == item);
+          this.incomeList.splice(index, 1);
+        } else {
+          let index = this.expenseList.findIndex(i => i == item);
+          this.expenseList.splice(index, 1);
+        }
+      } else {
+        this.snackBar.open("Error: ", "Unable to delete the item.", {duration: 3000});
+      }
+    }, error =>{
+      console.log(error);
+    });
+  }
+
 }
 

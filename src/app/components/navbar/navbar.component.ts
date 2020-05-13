@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
     private listTitles: any[];
     location: Location;
-      mobile_menu_visible: any = 0;
+    mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
 
@@ -117,7 +117,7 @@ export class NavbarComponent implements OnInit {
       titlee = titlee.split('/').pop();
 
       for(var item = 0; item < this.listTitles.length; item++){
-          if(this.listTitles[item].path === titlee){
+          if(this.listTitles[item].path === "/"+titlee){
               return this.listTitles[item].title;
           }
       }

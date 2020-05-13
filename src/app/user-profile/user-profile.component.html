@@ -8,37 +8,49 @@
                       <p class="card-category">Complete your profile</p>
                   </div>
                   <div class="card-body">
-                      <form>
+                      <form [formGroup]="updateForm" (ngSubmit)="onSubmit(updateForm.value)">
                           <div class="row">
-                              <div class="col-md-5">
-                                <mat-form-field class="example-full-width">
-                                    <input matInput placeholder="Company (disabled)" disabled>
-                                  </mat-form-field>
-                              </div>
-                              <div class="col-md-3">
-                                  <mat-form-field class="example-full-width">
-                                    <input matInput placeholder="Username">
-                                  </mat-form-field>
-                              </div>
-                              <div class="col-md-4">
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Username" formControlName="userName">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Password" formControlName="password">
+                                </mat-form-field>
+                            </div>
+                              <!-- <div class="col-md-4">
                                   <mat-form-field class="example-full-width">
                                     <input matInput placeholder="Email address" type="email">
                                   </mat-form-field>
-                              </div>
+                              </div> -->
                           </div>
                           <div class="row">
                               <div class="col-md-6">
                                 <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Fist Name" type="text">
+                                  <input matInput placeholder="Fist Name" formControlName="firstName" type="text">
                                 </mat-form-field>
                               </div>
                               <div class="col-md-6">
                                 <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Last Name" type="text">
+                                  <input matInput placeholder="Last Name" formControlName="lastName" type="text">
                                 </mat-form-field>
                               </div>
                           </div>
                           <div class="row">
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Phone No" formControlName="phoneNo" type="text">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Email Id" formControlName="emailId" type="text">
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <!-- <div class="row">
                               <div class="col-md-12">
                                 <mat-form-field class="example-full-width">
                                   <input matInput placeholder="Adress" type="text">
@@ -61,21 +73,13 @@
                                   <input matInput placeholder="Postal Code" type="text">
                                 </mat-form-field>
                               </div>
-                          </div>
+                          </div> -->
                           <div class="row">
-                              <div class="col-md-12">
-                                <label>About Me</label>
-                                <mat-form-field class="example-full-width">
-                                   <textarea matInput placeholder="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."></textarea>
-                                 </mat-form-field>
-                                  <!-- <div class="form-group">
-
-                                      <div class="form-group">
-                                          <label class="bmd-label-floating"> Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</label>
-                                          <textarea class="form-control" rows="5"></textarea>
-                                      </div>
-                                  </div> -->
-                              </div>
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Shop Id" formControlName="shopId" type="text">
+                              </mat-form-field>
+                            </div>
                           </div>
                           <button mat-raised-button type="submit" class="btn btn-danger pull-right">Update Profile</button>
                           <div class="clearfix"></div>
@@ -87,14 +91,14 @@
               <div class="card card-profile">
                   <div class="card-avatar">
                       <a href="#pablo">
-                          <img class="img" src="./assets/img/faces/marc.jpg" />
+                          <img class="img" src="./assets/img/faces/deadpooljpg.jpg" />
                       </a>
                   </div>
                   <div class="card-body">
                       <h6 class="card-category text-gray">CEO / Co-Founder</h6>
-                      <h4 class="card-title">Alec Thompson</h4>
+                      <h4 class="card-title">{{userName}}</h4>
                       <p class="card-description">
-                          Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                          Shop Id: 234
                       </p>
                       <a href="#pablo" class="btn btn-danger btn-round">Follow</a>
                   </div>

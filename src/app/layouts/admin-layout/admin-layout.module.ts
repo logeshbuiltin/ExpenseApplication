@@ -11,8 +11,6 @@ import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
-import { LoginComponent } from 'app/login/login.component';
-import { RegisterComponent } from 'app/register/register.component';
 
 
 import {
@@ -28,6 +26,19 @@ import {
 } from '@angular/material';
 import { ExpenseEntryComponent } from 'app/expense-entry/expense-entry.component';
 import { CdkTableModule } from '@angular/cdk/table';
+import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
+
+const matModules = [
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatTooltipModule,
+  MatPaginatorModule,
+  MatDialogModule,
+  MatTableModule,
+];
 
 @NgModule({
   imports: [
@@ -35,30 +46,14 @@ import { CdkTableModule } from '@angular/cdk/table';
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatRippleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatTooltipModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    MatTableModule,
-    CdkTableModule
+    CdkTableModule,
+    matModules
   ],
   exports:[
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatRippleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatTooltipModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    MatTableModule,
-    CdkTableModule
+    CdkTableModule,
+    matModules
   ],
   declarations: [
     DashboardComponent,
@@ -69,11 +64,10 @@ import { CdkTableModule } from '@angular/cdk/table';
     MapsComponent,
     NotificationsComponent,
     UpgradeComponent,
-    LoginComponent,
-    RegisterComponent,
     ExpenseEntryComponent,
+    ConfirmDialogComponent
   ],
-  entryComponents:[ExpenseEntryComponent]
+  entryComponents:[ExpenseEntryComponent, ConfirmDialogComponent]
 })
 
 export class AdminLayoutModule {}

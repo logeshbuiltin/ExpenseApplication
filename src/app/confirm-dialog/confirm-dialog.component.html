@@ -1,0 +1,21 @@
+
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-12" style="width: 400px;">
+              <div class="card cardchg">
+                  <div class="card-header card-header-danger">
+                      <h2 class="card-title">{{dialogTitle}}</h2>
+                  </div>
+                  <div class="card-body">
+                    <div class="col-md-12">
+                        <span><h4>{{confirmationDialog}}</h4></span>
+                    </div>
+                      <button mat-raised-button (click)="confirmDialog('yes')" class="btn btn-danger elementspace">Yes</button>
+                      <button mat-raised-button (click)="confirmDialog('no')" class="btn btn-danger pull-right elementspace">No</button>
+                  </div>
+              </div>
+          </div>         
+      </div>
+  </div>
+</div>

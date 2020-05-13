@@ -8,7 +8,7 @@
                       <h2 class="card-title">Register</h2>
                   </div>
                   <div class="card-body">
-                      <form [formGroup]="registerForm" novalidate>
+                      <form [formGroup]="registerForm" (ngSubmit) = "onSubmit(registerForm.value)" novalidate>
                           <div class="container-fluid">
                                 <div class="row pull-center">
                                     <div class="col-md-6 elementspace">
@@ -56,8 +56,8 @@
                                     </mat-form-field>
                               </div>
                             </div>                                              
-                                <button mat-raised-button type="submit" (click)="onSubmit()" class="btn btn-danger elementspace">Register</button>
-                                <button mat-raised-button type="submit" class="btn btn-danger pull-right elementspace">Cancel</button>
+                                <button mat-raised-button type="submit" class="btn btn-danger elementspace">Register</button>
+                                <button mat-raised-button (click)="onCancel()" class="btn btn-danger pull-right elementspace">Cancel</button>
                           </div>                        
                       </form>
                   </div>
